@@ -1,6 +1,5 @@
+import type { TokenType } from "./token-types.js";
 import { SPECS } from "./specs.js";
-
-export type TokenType = NonNullable<(typeof SPECS)[number][1]>;
 
 export type Token = {
   readonly type: TokenType;
