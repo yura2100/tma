@@ -6,7 +6,7 @@ import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
 export type MessageNode = {
   readonly type: (typeof NODE_TYPE)["MESSAGE"];
   readonly request: IdentifierNode;
-  readonly actor: IdentifierNode;
+  readonly actors: ReadonlyArray<IdentifierNode>;
   readonly error: IdentifierNode;
   readonly response: IdentifierNode;
 };
@@ -15,7 +15,15 @@ export function parseMessage(consumer: TokensConsumer): MessageNode {
   const request = parseIdentifier(consumer);
 
   consumer.consume(TOKEN_TYPES.LEFT_PARENTHESES);
-  const actor = parseIdentifier(consumer);
+  const actors = [];
+  while (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
+    const actor = parseIdentifier(consumer);
+    actors.push(actor);
+
+    if (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
+      consumer.consume(TOKEN_TYPES.COMMA);
+    }
+  }
   consumer.consume(TOKEN_TYPES.RIGHT_PARENTHESES);
 
   consumer.consume(TOKEN_TYPES.ARROW);
@@ -25,5 +33,5 @@ export function parseMessage(consumer: TokensConsumer): MessageNode {
   const response = parseIdentifier(consumer);
   consumer.consume(TOKEN_TYPES.SEMICOLON);
 
-  return { type: NODE_TYPE.MESSAGE, request, actor, error, response };
+  return { type: NODE_TYPE.MESSAGE, request, actors, error, response };
 }

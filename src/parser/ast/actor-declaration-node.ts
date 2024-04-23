@@ -7,7 +7,7 @@ import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
 export type ActorDeclarationNode = {
   readonly type: (typeof NODE_TYPE)["ACTOR_DECLARATION"];
   readonly identifier: IdentifierNode;
-  readonly parameters: IdentifierNode;
+  readonly parameters: ReadonlyArray<IdentifierNode>;
   readonly messages: ReadonlyArray<MessageNode>;
 };
 
@@ -18,7 +18,15 @@ export function parseActorDeclaration(
   const identifier = parseIdentifier(consumer);
 
   consumer.consume(TOKEN_TYPES.LEFT_PARENTHESES);
-  const parameters = parseIdentifier(consumer);
+  const parameters = [];
+  while (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
+    const parameter = parseIdentifier(consumer);
+    parameters.push(parameter);
+
+    if (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
+      consumer.consume(TOKEN_TYPES.COMMA);
+    }
+  }
   consumer.consume(TOKEN_TYPES.RIGHT_PARENTHESES);
 
   consumer.consume(TOKEN_TYPES.LEFT_CURLY_BRACE);
