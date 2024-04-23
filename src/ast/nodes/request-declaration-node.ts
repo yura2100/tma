@@ -1,4 +1,5 @@
 import type { ASTNode } from "../ast-node.js";
+import type { Visitor } from "../visitor.js";
 import { NODE_TYPE } from "../node-type.js";
 import type { IdentifierNode } from "./identifier-node.js";
 import type { PropertyNode } from "./property-node.js";
@@ -14,5 +15,14 @@ export class RequestDeclarationNode implements ASTNode {
   ) {
     this.identifier = identifier;
     this.properties = properties;
+  }
+
+  traverse(visitor: Visitor): void {
+    visitor.enter(this);
+    this.identifier.traverse(visitor);
+    for (const property of this.properties) {
+      property.traverse(visitor);
+    }
+    visitor.leave(this);
   }
 }
