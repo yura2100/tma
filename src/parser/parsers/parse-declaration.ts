@@ -1,28 +1,11 @@
 import { match } from "ts-pattern";
-import {
-  type ActorDeclarationNode,
-  parseActorDeclaration,
-} from "./actor-declaration-node.js";
-import {
-  parseErrorDeclaration,
-  type ErrorDeclarationNode,
-} from "./error-declaration-node.js";
-import {
-  parseRequestDeclaration,
-  type RequestDeclarationNode,
-} from "./request-declaration-node.js";
-import {
-  parseResponseDeclaration,
-  type ResponseDeclarationNode,
-} from "./response-declaration-node.js";
+import type { DeclarationNode } from "../../ast/nodes/index.js";
+import { parseActorDeclaration } from "./parse-actor-declaration.js";
+import { parseErrorDeclaration } from "./parse-error-declaration.js";
+import { parseRequestDeclaration } from "./parse-request-declaration.js";
+import { parseResponseDeclaration } from "./parse-response-declaration.js";
 import type { TokensConsumer } from "../tokens-consumer.js";
 import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
-
-export type DeclarationNode =
-  | ActorDeclarationNode
-  | ErrorDeclarationNode
-  | RequestDeclarationNode
-  | ResponseDeclarationNode;
 
 export function parseDeclaration(consumer: TokensConsumer): DeclarationNode {
   const token = consumer.lookahead();

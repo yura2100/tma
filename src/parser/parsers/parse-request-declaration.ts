@@ -1,14 +1,8 @@
-import { parseIdentifier, type IdentifierNode } from "./identifier-node.js";
-import { parseProperty, type PropertyNode } from "./property-node.js";
-import { NODE_TYPE } from "../node-type.js";
+import { RequestDeclarationNode } from "../../ast/nodes/index.js";
+import { parseIdentifier } from "./parse-identifier.js";
+import { parseProperty } from "./parse-property.js";
 import type { TokensConsumer } from "../tokens-consumer.js";
 import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
-
-export type RequestDeclarationNode = {
-  readonly type: (typeof NODE_TYPE)["REQUEST_DECLARATION"];
-  readonly identifier: IdentifierNode;
-  readonly properties: ReadonlyArray<PropertyNode>;
-};
 
 export function parseRequestDeclaration(
   consumer: TokensConsumer,
@@ -24,5 +18,5 @@ export function parseRequestDeclaration(
   }
   consumer.consume(TOKEN_TYPES.RIGHT_CURLY_BRACE);
 
-  return { type: NODE_TYPE.REQUEST_DECLARATION, identifier, properties };
+  return new RequestDeclarationNode(identifier, properties);
 }

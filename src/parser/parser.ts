@@ -1,6 +1,7 @@
 import type { Token } from "../tokenizer/index.js";
 import { TokensConsumer } from "./tokens-consumer.js";
-import { parseSchema, type SchemaNode } from "./ast/index.js";
+import type { SchemaNode } from "../ast/nodes/index.js";
+import { parseSchema } from "./parsers/parse-schema.js";
 
 export class Parser {
   private readonly consumer: TokensConsumer;

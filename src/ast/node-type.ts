@@ -11,3 +11,5 @@ export const NODE_TYPE = {
   SCHEMA: "Schema",
   STRING_LITERAL: "StringLiteral",
 } as const;
+
+export type NodeType = (typeof NODE_TYPE)[keyof typeof NODE_TYPE];

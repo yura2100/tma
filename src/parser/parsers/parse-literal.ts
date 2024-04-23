@@ -1,20 +1,10 @@
 import { match } from "ts-pattern";
-import {
-  type BooleanLiteralNode,
-  parseBooleanLiteral,
-} from "./boolean-literal-node.js";
-import { parseIntLiteral, type IntLiteralNode } from "./int-literal-node.js";
-import {
-  parseStringLiteral,
-  type StringLiteralNode,
-} from "./string-literal-node.js";
+import type { LiteralNode } from "../../ast/nodes/index.js";
+import { parseBooleanLiteral } from "./parse-boolean-literal.js";
+import { parseIntLiteral } from "./parse-int-literal.js";
+import { parseStringLiteral } from "./parse-string-literal.js";
 import type { TokensConsumer } from "../tokens-consumer.js";
 import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
-
-export type LiteralNode =
-  | BooleanLiteralNode
-  | IntLiteralNode
-  | StringLiteralNode;
 
 export function parseLiteral(consumer: TokensConsumer): LiteralNode {
   const token = consumer.lookahead();

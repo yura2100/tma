@@ -1,15 +1,8 @@
-import { parseIdentifier, type IdentifierNode } from "./identifier-node.js";
-import { parseMessage, type MessageNode } from "./message-node.js";
-import { NODE_TYPE } from "../node-type.js";
+import { ActorDeclarationNode } from "../../ast/nodes/index.js";
+import { parseIdentifier } from "./parse-identifier.js";
+import { parseMessage } from "./parse-message.js";
 import type { TokensConsumer } from "../tokens-consumer.js";
 import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
-
-export type ActorDeclarationNode = {
-  readonly type: (typeof NODE_TYPE)["ACTOR_DECLARATION"];
-  readonly identifier: IdentifierNode;
-  readonly parameters: ReadonlyArray<IdentifierNode>;
-  readonly messages: ReadonlyArray<MessageNode>;
-};
 
 export function parseActorDeclaration(
   consumer: TokensConsumer,
@@ -37,10 +30,5 @@ export function parseActorDeclaration(
   }
   consumer.consume(TOKEN_TYPES.RIGHT_CURLY_BRACE);
 
-  return {
-    type: NODE_TYPE.ACTOR_DECLARATION,
-    identifier,
-    parameters,
-    messages,
-  };
+  return new ActorDeclarationNode(identifier, parameters, messages);
 }
