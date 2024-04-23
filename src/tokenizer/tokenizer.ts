@@ -10,14 +10,9 @@ export class Tokenizer implements IterableIterator<Token> {
   private readonly src: string;
   private cursor: number;
 
-  private constructor(src: string) {
+  constructor(src: string) {
     this.src = src;
     this.cursor = 0;
-  }
-
-  static tokenize(src: string): ReadonlyArray<Token> {
-    const tokenizer = new Tokenizer(src);
-    return Array.from(tokenizer);
   }
 
   private hasMoreTokens(): boolean {
