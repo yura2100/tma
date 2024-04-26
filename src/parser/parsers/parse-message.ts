@@ -1,23 +1,13 @@
 import { MessageNode } from "../../ast/nodes/index.js";
 import { parseIdentifier } from "./parse-identifier.js";
+import { parseIdentifierList } from "./parse-identifier-list.js";
 import { parseNullableIdentifier } from "./parse-nullable-identifier.js";
 import type { TokensConsumer } from "../tokens-consumer.js";
 import { TOKEN_TYPES } from "../../tokenizer/token-types.js";
 
 export function parseMessage(consumer: TokensConsumer): MessageNode {
   const request = parseIdentifier(consumer);
-
-  consumer.consume(TOKEN_TYPES.LEFT_PARENTHESES);
-  const actors = [];
-  while (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
-    const actor = parseIdentifier(consumer);
-    actors.push(actor);
-
-    if (consumer.lookahead().type !== TOKEN_TYPES.RIGHT_PARENTHESES) {
-      consumer.consume(TOKEN_TYPES.COMMA);
-    }
-  }
-  consumer.consume(TOKEN_TYPES.RIGHT_PARENTHESES);
+  const actors = parseIdentifierList(consumer);
 
   consumer.consume(TOKEN_TYPES.ARROW);
   const error = parseNullableIdentifier(consumer);
