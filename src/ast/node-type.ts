@@ -5,6 +5,7 @@ export const NODE_TYPE = {
   IDENTIFIER: "Identifier",
   INT_LITERAL: "IntLiteral",
   MESSAGE: "Message",
+  NULL: "Null",
   PROPERTY: "Property",
   REQUEST_DECLARATION: "RequestDeclaration",
   RESPONSE_DECLARATION: "ResponseDeclaration",
